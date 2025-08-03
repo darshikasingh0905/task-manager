@@ -202,7 +202,6 @@ class TaskManager {
                 break;
             case 'upcoming':
                 this.currentFilter = 'upcoming';
-                console.log('Upcoming filter set to:', this.currentFilter);
                 break;
             case 'work':
             case 'personal':
@@ -218,7 +217,7 @@ class TaskManager {
                 break;
         }
         
-        console.log('Current filter after switch:', this.currentFilter);
+        console.log('Current filter set to:', this.currentFilter);
         
         // Update filter buttons to match
         this.updateFilterButtons(section);
@@ -438,6 +437,8 @@ class TaskManager {
         const category = this.categorySelect.value;
         const dueDate = this.dueDateInput.value;
         
+        console.log('Adding task with due date:', dueDate);
+        
         if (!taskText) return;
         
         if (this.editingTaskId) {
@@ -458,6 +459,7 @@ class TaskManager {
                 completedAt: null
             };
             
+            console.log('Created task:', task);
             this.tasks.unshift(task);
         }
         
@@ -605,17 +607,20 @@ class TaskManager {
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 console.log('Upcoming filter - Today:', today);
+                console.log('All tasks:', this.tasks);
                 filteredTasks = filteredTasks.filter(task => {
+                    console.log('Checking task:', task.text, 'dueDate:', task.dueDate, 'completed:', task.completed);
                     if (!task.dueDate || task.completed) {
-                        console.log('Task excluded:', task.text, '- No due date or completed');
+                        console.log('Task excluded - no due date or completed');
                         return false;
                     }
                     const dueDate = new Date(task.dueDate);
                     dueDate.setHours(0, 0, 0, 0);
-                    console.log('Task due date:', task.text, dueDate, '>', today, '=', dueDate > today);
-                    return dueDate > today;
+                    const isUpcoming = dueDate > today;
+                    console.log('Due date:', dueDate, 'isUpcoming:', isUpcoming);
+                    return isUpcoming;
                 });
-                console.log('Upcoming tasks found:', filteredTasks.length);
+                console.log('Filtered upcoming tasks:', filteredTasks);
                 break;
         }
         
@@ -639,15 +644,19 @@ class TaskManager {
 
     renderTasks() {
         const filteredTasks = this.getFilteredTasks();
+        console.log('Rendering tasks with filter:', this.currentFilter);
+        console.log('Filtered tasks count:', filteredTasks.length);
         
         if (filteredTasks.length === 0) {
             this.taskList.style.display = 'none';
             this.emptyState.style.display = 'block';
+            console.log('Showing empty state');
         } else {
             this.taskList.style.display = 'block';
             this.emptyState.style.display = 'none';
             
             this.taskList.innerHTML = filteredTasks.map(task => this.createTaskElement(task)).join('');
+            console.log('Rendered', filteredTasks.length, 'tasks');
         }
         
         // Show/hide bulk actions
@@ -750,18 +759,12 @@ class TaskManager {
         // Calculate upcoming tasks (tasks with due dates in the future)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        console.log('Stats calculation - Today:', today);
         const upcoming = this.tasks.filter(task => {
-            if (!task.dueDate || task.completed) {
-                console.log('Stats - Task excluded:', task.text, '- No due date or completed');
-                return false;
-            }
+            if (!task.dueDate || task.completed) return false;
             const dueDate = new Date(task.dueDate);
             dueDate.setHours(0, 0, 0, 0);
-            console.log('Stats - Task due date:', task.text, dueDate, '>', today, '=', dueDate > today);
             return dueDate > today;
         }).length;
-        console.log('Stats - Upcoming count:', upcoming);
         
         this.totalTasksEl.textContent = total;
         this.activeTasksEl.textContent = active;
