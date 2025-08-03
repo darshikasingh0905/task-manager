@@ -190,6 +190,8 @@ class TaskManager {
     }
 
     handleSidebarSection(section) {
+        console.log('Sidebar section clicked:', section);
+        
         // Update current filter based on sidebar selection
         switch(section) {
             case 'all':
@@ -200,6 +202,7 @@ class TaskManager {
                 break;
             case 'upcoming':
                 this.currentFilter = 'upcoming';
+                console.log('Upcoming filter set to:', this.currentFilter);
                 break;
             case 'work':
             case 'personal':
@@ -214,6 +217,8 @@ class TaskManager {
                 this.currentPriority = section;
                 break;
         }
+        
+        console.log('Current filter after switch:', this.currentFilter);
         
         // Update filter buttons to match
         this.updateFilterButtons(section);
@@ -311,10 +316,15 @@ class TaskManager {
         filterBtns.forEach(btn => btn.classList.remove('active'));
         
         // Find matching filter button
-        const matchingBtn = Array.from(filterBtns).find(btn => {
-            const filter = btn.getAttribute('data-filter');
-            return filter === 'all' && (section === 'all' || section === 'today' || section === 'upcoming');
-        });
+        let matchingBtn = null;
+        
+        if (section === 'all') {
+            matchingBtn = Array.from(filterBtns).find(btn => btn.getAttribute('data-filter') === 'all');
+        } else if (section === 'today') {
+            matchingBtn = Array.from(filterBtns).find(btn => btn.getAttribute('data-filter') === 'active');
+        } else if (section === 'upcoming') {
+            matchingBtn = Array.from(filterBtns).find(btn => btn.getAttribute('data-filter') === 'active');
+        }
         
         if (matchingBtn) {
             matchingBtn.classList.add('active');
@@ -592,11 +602,20 @@ class TaskManager {
                 });
                 break;
             case 'upcoming':
-                const upcomingDate = new Date();
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                console.log('Upcoming filter - Today:', today);
                 filteredTasks = filteredTasks.filter(task => {
-                    const taskDate = new Date(task.createdAt);
-                    return taskDate > upcomingDate;
+                    if (!task.dueDate || task.completed) {
+                        console.log('Task excluded:', task.text, '- No due date or completed');
+                        return false;
+                    }
+                    const dueDate = new Date(task.dueDate);
+                    dueDate.setHours(0, 0, 0, 0);
+                    console.log('Task due date:', task.text, dueDate, '>', today, '=', dueDate > today);
+                    return dueDate > today;
                 });
+                console.log('Upcoming tasks found:', filteredTasks.length);
                 break;
         }
         
@@ -731,12 +750,18 @@ class TaskManager {
         // Calculate upcoming tasks (tasks with due dates in the future)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+        console.log('Stats calculation - Today:', today);
         const upcoming = this.tasks.filter(task => {
-            if (!task.dueDate || task.completed) return false;
+            if (!task.dueDate || task.completed) {
+                console.log('Stats - Task excluded:', task.text, '- No due date or completed');
+                return false;
+            }
             const dueDate = new Date(task.dueDate);
             dueDate.setHours(0, 0, 0, 0);
+            console.log('Stats - Task due date:', task.text, dueDate, '>', today, '=', dueDate > today);
             return dueDate > today;
         }).length;
+        console.log('Stats - Upcoming count:', upcoming);
         
         this.totalTasksEl.textContent = total;
         this.activeTasksEl.textContent = active;
