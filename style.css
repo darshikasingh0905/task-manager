@@ -931,32 +931,28 @@ body {
 @media (max-width: 768px) {
     /* Navigation responsive */
     .nav-container {
-        padding: 0 15px;
+        padding: 0 10px;
         height: 70px;
+        width: 100vw;
+        overflow-x: hidden;
     }
     
     .nav-brand {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
     
     .nav-logo {
-        width: 35px;
-        height: 35px;
+        width: 30px;
+        height: 30px;
     }
     
-    .nav-actions {
-        gap: 8px;
+    .nav-right {
+        margin-right: 10px;
     }
     
-    .nav-btn {
-        padding: 10px;
-        font-size: 1.1rem;
-    }
-    
-    .profile-btn {
-        width: 45px;
-        height: 45px;
-        padding: 10px;
+    .pomodoro-link {
+        font-size: 0.9rem;
+        padding: 8px 12px;
     }
     
     /* Sidebar responsive */
@@ -969,11 +965,11 @@ body {
         transform: translateX(0);
     }
     
-
-    
     .main-container {
         margin-left: 0 !important;
-        padding: 15px;
+        padding: 10px;
+        width: 100%;
+        overflow-x: hidden;
     }
     
     .sidebar-toggle-nav {
@@ -982,43 +978,70 @@ body {
     
     /* Main content responsive */
     .container {
-        padding: 15px;
+        padding: 10px;
     }
     
-
+    .task-input-section {
+        padding: 20px;
+    }
     
     .input-group {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
     
     .task-controls {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
+        padding: 15px;
     }
     
     .filter-section {
         justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .filter-btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .sort-select {
+        width: 100%;
+        max-width: 200px;
     }
     
     .task-stats {
         flex-direction: column;
         gap: 15px;
+        padding: 15px;
     }
     
     .task-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+        padding: 12px;
     }
     
     .task-actions {
         margin-left: 0;
         align-self: flex-end;
+        width: 100%;
+        justify-content: flex-end;
     }
     
     .bulk-actions {
         flex-direction: column;
+        gap: 10px;
+    }
+    
+    .bulk-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 
@@ -1041,39 +1064,94 @@ body {
 @media (max-width: 480px) {
     /* Extra small screens */
     .nav-container {
-        padding: 0 10px;
-        height: 65px;
+        padding: 0 5px;
+        height: 60px;
+        width: 100vw;
+        overflow-x: hidden;
     }
     
     .nav-brand {
-        font-size: 1.2rem;
-    }
-    
-    .nav-logo {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .nav-actions {
-        gap: 5px;
-    }
-    
-    .nav-btn {
-        padding: 8px;
         font-size: 1rem;
     }
     
-    .profile-btn {
-        width: 40px;
-        height: 40px;
-        padding: 8px;
+    .nav-logo {
+        width: 25px;
+        height: 25px;
     }
     
-    .task-input-section,
-    .task-controls,
-    .task-stats,
-    .task-list-container,
-    .bulk-actions {
+    .nav-right {
+        margin-right: 5px;
+    }
+    
+    .pomodoro-link {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+    
+    .main-container {
+        padding: 5px;
+        width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .task-input-section {
         padding: 15px;
+    }
+    
+    .input-group {
+        gap: 8px;
+    }
+    
+    .task-controls {
+        padding: 10px;
+        gap: 8px;
+    }
+    
+    .filter-section {
+        gap: 5px;
+    }
+    
+    .filter-btn {
+        padding: 6px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .sort-select {
+        max-width: 150px;
+        font-size: 0.9rem;
+    }
+    
+    .task-stats {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .task-item {
+        padding: 10px;
+        gap: 8px;
+    }
+    
+    .task-text {
+        font-size: 1rem;
+    }
+    
+    .task-meta {
+        font-size: 0.8rem;
+    }
+    
+    .priority-badge,
+    .category-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+    
+    .bulk-actions {
+        padding: 10px;
+        gap: 8px;
+    }
+    
+    .bulk-btn {
+        font-size: 1rem;
+        padding: 10px 15px;
     }
 }
