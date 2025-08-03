@@ -20,6 +20,7 @@ class TaskManager {
         this.taskInput = document.getElementById('taskInput');
         this.prioritySelect = document.getElementById('prioritySelect');
         this.categorySelect = document.getElementById('categorySelect');
+        this.dueDateInput = document.getElementById('dueDateInput');
         
         // Task list
         this.taskList = document.getElementById('taskList');
@@ -425,12 +426,13 @@ class TaskManager {
         const taskText = this.taskInput.value.trim();
         const priority = this.prioritySelect.value;
         const category = this.categorySelect.value;
+        const dueDate = this.dueDateInput.value;
         
         if (!taskText) return;
         
         if (this.editingTaskId) {
             // Update existing task
-            this.updateTask(this.editingTaskId, taskText, priority, category);
+            this.updateTask(this.editingTaskId, taskText, priority, category, dueDate);
             this.editingTaskId = null;
             this.taskForm.querySelector('.add-btn').innerHTML = '<i class="fas fa-plus"></i> Add Task';
         } else {
@@ -440,6 +442,7 @@ class TaskManager {
                 text: taskText,
                 priority: priority,
                 category: category,
+                dueDate: dueDate,
                 completed: false,
                 createdAt: new Date().toISOString(),
                 completedAt: null
@@ -453,15 +456,18 @@ class TaskManager {
         this.updateStats();
         this.taskInput.value = '';
         this.prioritySelect.value = 'medium';
+        this.categorySelect.value = 'personal';
+        this.dueDateInput.value = '';
         this.taskInput.focus();
     }
 
-    updateTask(taskId, text, priority, category) {
+    updateTask(taskId, text, priority, category, dueDate) {
         const taskIndex = this.tasks.findIndex(task => task.id === taskId);
         if (taskIndex !== -1) {
             this.tasks[taskIndex].text = text;
             this.tasks[taskIndex].priority = priority;
             this.tasks[taskIndex].category = category;
+            this.tasks[taskIndex].dueDate = dueDate;
         }
     }
 
@@ -679,6 +685,12 @@ class TaskManager {
                             <i class="fas fa-calendar"></i>
                             ${formattedDate}
                         </span>
+                        ${task.dueDate ? `
+                            <span class="task-date">
+                                <i class="fas fa-clock"></i>
+                                Due: ${new Date(task.dueDate).toLocaleDateString()}
+                            </span>
+                        ` : ''}
                         <span class="priority-badge priority-${task.priority}">
                             ${priorityLabels[task.priority]}
                         </span>
@@ -697,9 +709,6 @@ class TaskManager {
                     </div>
                 </div>
                 <div class="task-actions">
-                    <button class="action-btn edit-btn" onclick="taskManager.editTask(${task.id})" title="Edit task">
-                        <i class="fas fa-edit"></i>
-                    </button>
                     <button class="action-btn delete-btn" onclick="taskManager.deleteTask(${task.id})" title="Delete task">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -719,6 +728,16 @@ class TaskManager {
         const completed = this.tasks.filter(task => task.completed).length;
         const active = total - completed;
         
+        // Calculate upcoming tasks (tasks with due dates in the future)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const upcoming = this.tasks.filter(task => {
+            if (!task.dueDate || task.completed) return false;
+            const dueDate = new Date(task.dueDate);
+            dueDate.setHours(0, 0, 0, 0);
+            return dueDate > today;
+        }).length;
+        
         this.totalTasksEl.textContent = total;
         this.activeTasksEl.textContent = active;
         this.completedTasksEl.textContent = completed;
@@ -726,9 +745,11 @@ class TaskManager {
         // Update sidebar stats
         const sidebarTotalTasks = document.getElementById('sidebarTotalTasks');
         const sidebarCompletedTasks = document.getElementById('sidebarCompletedTasks');
+        const upcomingCount = document.querySelector('.upcoming-count');
         
         if (sidebarTotalTasks) sidebarTotalTasks.textContent = total;
         if (sidebarCompletedTasks) sidebarCompletedTasks.textContent = completed;
+        if (upcomingCount) upcomingCount.textContent = upcoming;
     }
 
     saveTasks() {

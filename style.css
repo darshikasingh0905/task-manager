@@ -12,6 +12,37 @@ body {
     min-height: 100vh;
     color: #2c2c2c;
     line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
 /* Navigation Bar */
@@ -23,31 +54,61 @@ body {
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-right: 2px;
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0;
+    width: 100vw;
+    margin: 0 10px 0 0;
+    padding: 0 100px 0 0;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    height: 70px;
+    height: 90px;
     overflow: visible;
+    position: relative;
 }
 
 .nav-left {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-left: -30px;
+    margin-left: 0;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.pomodoro-link {
+    color: #d63384;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.pomodoro-link:hover {
+    background: rgba(214, 51, 132, 0.1);
+    border-color: #d63384;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(214, 51, 132, 0.2);
 }
 
 .nav-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 1.5rem;
+    gap: 15px;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #d63384;
     cursor: pointer;
@@ -61,6 +122,19 @@ body {
 .nav-brand i {
     font-size: 1.8rem;
     color: #e91e63;
+}
+
+.nav-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(330deg) brightness(104%) contrast(97%);
+}
+
+.nav-logo:hover {
+    transform: scale(1.1);
 }
 
 .nav-menu {
@@ -107,18 +181,22 @@ body {
     align-items: center;
     gap: 15px;
     margin-left: auto;
-    margin-right: -35px;
+    margin-right: 0;
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .nav-btn {
     background: none;
     border: none;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 12px 14px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
     color: #666;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     position: relative;
 }
 
@@ -140,21 +218,30 @@ body {
 .profile-btn {
     background: linear-gradient(135deg, #d63384, #e91e63);
     color: white;
-    padding: 10px 25px;
-    border-radius: 25px;
-    margin-right: 0;
+    padding: 12px;
+    border-radius: 50%;
+    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(214, 51, 132, 0.2);
+    transition: all 0.3s ease;
 }
 
 .profile-btn:hover {
     background: linear-gradient(135deg, #c2185b, #d32f2f);
     color: white;
-    box-shadow: 0 4px 15px rgba(214, 51, 132, 0.3);
+    box-shadow: 0 6px 20px rgba(214, 51, 132, 0.4);
+    transform: translateY(-2px);
 }
 
 /* App Layout */
 .app-layout {
     display: flex;
-    min-height: calc(100vh - 70px); /* Subtract navbar height */
+    min-height: calc(100vh - 90px); /* Subtract navbar height */
 }
 
 /* Sidebar */
@@ -167,8 +254,8 @@ body {
     flex-direction: column;
     position: fixed;
     left: 0;
-    top: 70px; /* Below navbar */
-    height: calc(100vh - 70px);
+    top: 90px; /* Below navbar */
+    height: calc(100vh - 90px);
     z-index: 100;
     transition: all 0.3s ease;
     transform: translateX(0);
@@ -199,7 +286,7 @@ body {
 }
 
 .nav-title {
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: #2c2c2c;
     text-transform: uppercase;
@@ -221,6 +308,7 @@ body {
     text-decoration: none;
     transition: all 0.3s ease;
     border-left: 3px solid transparent;
+    font-size: 1.1rem;
 }
 
 .nav-item:hover {
@@ -239,7 +327,21 @@ body {
 .nav-item i {
     width: 20px;
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.2rem;
+}
+
+.upcoming-count {
+    background: linear-gradient(135deg, #d63384, #e91e63);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: auto;
+    min-width: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(214, 51, 132, 0.3);
+    animation: heartbeat 2s infinite;
 }
 
 .sidebar-footer {
@@ -258,13 +360,13 @@ body {
 
 .sidebar-stats .stat-number {
     display: block;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #d63384;
 }
 
 .sidebar-stats .stat-label {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: #2c2c2c;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -345,26 +447,31 @@ body {
 
 .priority-select {
     padding: 16px 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     border-radius: 12px;
     font-size: 1.1rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .priority-select:focus {
     outline: none;
     border-color: #d63384;
-    box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+    box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
 }
 
 .priority-select option {
-    background: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(310deg, rgba(255, 235, 241, 1) 23%, rgba(252, 215, 247, 1) 100%);
     color: #2c2c2c;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 2px;
 }
 
 .category-select {
@@ -389,6 +496,29 @@ body {
     background: rgba(255, 255, 255, 0.9);
     color: #2c2c2c;
     backdrop-filter: blur(10px);
+}
+
+.due-date-input {
+    padding: 12px 18px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(25px);
+    cursor: pointer;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    color: #2c2c2c;
+    font-weight: 500;
+}
+
+.due-date-input:focus {
+    outline: none;
+    border-color: #d63384;
+    box-shadow: 0 0 0 4px rgba(214, 51, 132, 0.3), 0 15px 50px rgba(0, 0, 0, 0.25), inset 0 2px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+    color: #d63384;
 }
 
 .add-btn {
@@ -437,7 +567,7 @@ body {
 }
 
 .filter-btn {
-    padding: 8px 16px;
+    padding: 10px 20px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
@@ -445,6 +575,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
+    font-size: 1.1rem;
 }
 
 .filter-btn:hover {
@@ -459,25 +590,45 @@ body {
 }
 
 .sort-select {
-    padding: 8px 12px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
+    padding: 12px 18px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(25px);
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    color: #2c2c2c;
+    font-weight: 500;
 }
 
 .sort-select:focus {
     outline: none;
     border-color: #d63384;
-    box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+    box-shadow: 0 0 0 4px rgba(214, 51, 132, 0.3), 0 15px 50px rgba(0, 0, 0, 0.25), inset 0 2px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+    color: #d63384;
 }
 
 .sort-select option {
-    background: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(310deg, rgba(255, 235, 241, 0.9) 23%, rgba(252, 215, 247, 0.9) 100%);
     color: #2c2c2c;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(25px);
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin: 4px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.sort-select option:hover {
+    background: linear-gradient(310deg, rgba(255, 235, 241, 1) 23%, rgba(252, 215, 247, 1) 100%);
+    transform: translateX(5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Task stats */
@@ -572,7 +723,7 @@ body {
 }
 
 .task-text {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 500;
     word-break: break-word;
 }
@@ -581,7 +732,7 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: #2c2c2c;
 }
 
@@ -592,9 +743,9 @@ body {
 }
 
 .priority-badge {
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-radius: 12px;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -615,9 +766,9 @@ body {
 }
 
 .category-badge {
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-radius: 12px;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
     display: flex;
@@ -647,12 +798,12 @@ body {
 }
 
 .action-btn {
-    padding: 6px 10px;
+    padding: 8px 12px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .edit-btn {
@@ -665,12 +816,14 @@ body {
 }
 
 .delete-btn {
-    background: #f44336;
-    color: white;
+    background: transparent;
+    color: #f44336;
+    border: none;
 }
 
 .delete-btn:hover {
-    background: #d32f2f;
+    background: rgba(244, 67, 54, 0.1);
+    color: #d32f2f;
 }
 
 /* Empty state */
@@ -721,6 +874,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 1.2rem;
 }
 
 .bulk-btn:not(.delete) {
@@ -778,26 +932,31 @@ body {
     /* Navigation responsive */
     .nav-container {
         padding: 0 15px;
-        height: 60px;
+        height: 70px;
     }
     
     .nav-brand {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
     
-    .nav-brand i {
-        font-size: 1.5rem;
+    .nav-logo {
+        width: 35px;
+        height: 35px;
     }
-    
-
     
     .nav-actions {
-        gap: 10px;
+        gap: 8px;
     }
     
     .nav-btn {
-        padding: 8px;
-        font-size: 1rem;
+        padding: 10px;
+        font-size: 1.1rem;
+    }
+    
+    .profile-btn {
+        width: 45px;
+        height: 45px;
+        padding: 10px;
     }
     
     /* Sidebar responsive */
@@ -863,8 +1022,52 @@ body {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
+    /* Large tablets and small laptops */
+    .nav-container {
+        padding: 0 20px;
+    }
+    
+    .nav-brand {
+        font-size: 1.6rem;
+    }
+    
+    .nav-logo {
+        width: 45px;
+        height: 45px;
+    }
+}
 
+@media (max-width: 480px) {
+    /* Extra small screens */
+    .nav-container {
+        padding: 0 10px;
+        height: 65px;
+    }
+    
+    .nav-brand {
+        font-size: 1.2rem;
+    }
+    
+    .nav-logo {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .nav-actions {
+        gap: 5px;
+    }
+    
+    .nav-btn {
+        padding: 8px;
+        font-size: 1rem;
+    }
+    
+    .profile-btn {
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+    }
     
     .task-input-section,
     .task-controls,
