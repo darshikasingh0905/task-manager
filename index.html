@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - GetItDone</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="nav-btn sidebar-toggle-nav" id="sidebarToggleNav" title="Toggle Sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-brand">
+                    <i class="fas fa-tasks"></i>
+                    <span>TuDuVaut</span>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button class="nav-btn profile-btn" title="Profile">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3 class="nav-title">Quick Actions</h3>
+                    <ul class="nav-list">
+                        <li>
+                            <a href="#" class="nav-item active" data-section="all">
+                                <i class="fas fa-list"></i>
+                                <span>All Tasks</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-item" data-section="today">
+                                <i class="fas fa-calendar-day"></i>
+                                <span>Today</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-item" data-section="upcoming">
+                                <i class="fas fa-calendar-week"></i>
+                                <span>Upcoming</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <h3 class="nav-title">Categories</h3>
+                    <ul class="nav-list">
+                        <li>
+                            <a href="#" class="nav-item" data-section="work">
+                                <i class="fas fa-briefcase"></i>
+                                <span>Work</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-item" data-section="personal">
+                                <i class="fas fa-user"></i>
+                                <span>Personal</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="nav-item" data-section="health">
+                                <i class="fas fa-heartbeat"></i>
+                                <span>Health</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <h3 class="nav-title">Priority</h3>
+                    <ul class="nav-list">
+                        <li>
+                            <a href="#" class="nav-item" data-section="high">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>High Priority</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-item" data-section="medium">
+                                <i class="fas fa-minus-circle"></i>
+                                <span>Medium Priority</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-item" data-section="low">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>Low Priority</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="sidebar-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="sidebarTotalTasks">0</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="sidebarCompletedTasks">0</span>
+                        <span class="stat-label">Done</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-container">
+            <main class="main-content">
+            <div class="task-input-section">
+                <form id="taskForm" class="task-form">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="taskInput" 
+                            placeholder="What needs to be done?" 
+                            required
+                            maxlength="100"
+                        >
+                        <select id="prioritySelect" class="priority-select">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <select id="categorySelect" class="category-select">
+                            <option value="personal">Personal</option>
+                            <option value="work">Work</option>
+                            <option value="health">Health</option>
+                        </select>
+                        <button type="submit" class="add-btn">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="task-controls">
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="active">To Be Completed</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+                <div class="sort-section">
+                    <select id="sortSelect" class="sort-select">
+                        <option value="date">Sort by Date</option>
+                        <option value="priority">Sort by Priority</option>
+                        <option value="name">Sort by Name</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="task-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalTasks">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="activeTasks">0</span>
+                    <span class="stat-label">Active</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="completedTasks">0</span>
+                    <span class="stat-label">Completed</span>
+                </div>
+            </div>
+
+            <div class="task-list-container">
+                <ul id="taskList" class="task-list">
+                    <!-- Tasks will be dynamically added here -->
+                </ul>
+                <div id="emptyState" class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>No tasks yet</h3>
+                    <p>Add your first task to get started!</p>
+                </div>
+            </div>
+
+            <div class="bulk-actions" id="bulkActions" style="display: none;">
+                <button id="completeAllBtn" class="bulk-btn">
+                    <i class="fas fa-check-double"></i> Complete All
+                </button>
+                <button id="deleteCompletedBtn" class="bulk-btn delete">
+                    <i class="fas fa-trash"></i> Delete Completed
+                </button>
+            </div>
+            </main>
+
+            <footer class="footer">
+                <p>&copy; 2024 Task Manager. Made with <i class="fas fa-heart"></i></p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
